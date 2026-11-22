@@ -32,6 +32,8 @@ jobs:
         uses: actions/checkout@v4
       - name: Setup Pages
         uses: actions/configure-pages@v5
+      - name: Rewrite absolute asset paths for project Pages
+        run: sed -i 's|href="/|href="./|g; s|src="/|src="./|g' web/index.html
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
