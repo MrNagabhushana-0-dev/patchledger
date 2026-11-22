@@ -1,0 +1,96 @@
+{
+  "version": "1.2.0",
+  "scope": "Browser-local product source. No model runner or private account records.",
+  "files": [
+    {
+      "path": ".gitignore",
+      "bytes": 89,
+      "sha256": "9bae76f51df1a5e9e37c1012032225d42904368fd2c3428227ecd7fa958c059f"
+    },
+    {
+      "path": "README.md",
+      "bytes": 4025,
+      "sha256": "c7c2f3c050ee27807fe46c9dbea5048abb019a13c0fc431a1e72ce4a33234feb"
+    },
+    {
+      "path": "package.json",
+      "bytes": 454,
+      "sha256": "66fd376201ff4145a85b4eb82dbf69d76acd76ad44fb940db390cbf3a37f31a1"
+    },
+    {
+      "path": "scripts/build-static.mjs",
+      "bytes": 265,
+      "sha256": "afc38e84454540c34284ae9b150824f95b9ae5f26797c1a27ed3c2d468f3c389"
+    },
+    {
+      "path": "scripts/serve.mjs",
+      "bytes": 1383,
+      "sha256": "8fe1d3de727c1199777a7f986e161dfa282482b04ff4d95ccb8624916854dca2"
+    },
+    {
+      "path": "src/inspect.mjs",
+      "bytes": 292,
+      "sha256": "9b25a13bde8bc267954035a7c9311d4e4dd1e9f4d748e2cbf79fdc42fc8ec95d"
+    },
+    {
+      "path": "test/compare.test.mjs",
+      "bytes": 2409,
+      "sha256": "4d0ded97cf44342a9ac11dcb6628a441af940ed9f601aa88c68b793c8a8fbfd0"
+    },
+    {
+      "path": "test/inspect.test.mjs",
+      "bytes": 2249,
+      "sha256": "981645356b88859a3539e54ab9bf2e114c6363da372a4599765fcff689870ac9"
+    },
+    {
+      "path": "test/ledger.test.mjs",
+      "bytes": 4997,
+      "sha256": "fdcc89afeb30f04a4d470be714a1ac997131666697ac18a8103af4c33c5b935d"
+    },
+    {
+      "path": "vercel.json",
+      "bytes": 490,
+      "sha256": "01c6eb549a784e1246006aa64646375cfb6d555cc7e1993fda506433db153ece"
+    },
+    {
+      "path": "web/app.js",
+      "bytes": 25203,
+      "sha256": "6dfd43d7a8cc7b5b07cdc0b016dff5f407dc4ec580dbfd5d6649f02defabf9fe"
+    },
+    {
+      "path": "web/compare-core.mjs",
+      "bytes": 1733,
+      "sha256": "89f364fd98a1ae607d94801c6ac41d76ce5c5dc18fe2d10157948dd61cf46594"
+    },
+    {
+      "path": "web/favicon.svg",
+      "bytes": 249,
+      "sha256": "96af30c6edef2cc523fe4f3122d484d1168468d35dea196c3acd16ccb3ec300f"
+    },
+    {
+      "path": "web/index.html",
+      "bytes": 9887,
+      "sha256": "221060785b22654dc13fef368d66444c8d04f8675c0034c25d28d33cd011fab9"
+    },
+    {
+      "path": "web/inspect-browser.mjs",
+      "bytes": 521,
+      "sha256": "153a7c6f913c7d7d64598aeecebb19d286cb6a36b1f7408d6fa446b56d43f80d"
+    },
+    {
+      "path": "web/inspect-core.mjs",
+      "bytes": 5083,
+      "sha256": "dd6682263da337c1d3eb3daf4872a7ce36d88ab0256990487d27d7c673325519"
+    },
+    {
+      "path": "web/ledger.mjs",
+      "bytes": 5814,
+      "sha256": "c123c75dfb7086edaecfed70e70d78f8e5478e9bfb5e82468c38f4b28f0cc8ae"
+    },
+    {
+      "path": "web/style.css",
+      "bytes": 21007,
+      "sha256": "b2ed93f71e388979e7f89869fc446b260040a908589538ee3bd7109e13dccdf8"
+    }
+  ]
+}

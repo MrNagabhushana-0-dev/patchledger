@@ -1,0 +1,16 @@
+{
+  "name": "patchledger",
+  "version": "1.2.0",
+  "private": true,
+  "type": "module",
+  "description": "Browser-local source-review workbench with version comparison, numbered evidence, human assessments and restorable handoff exports.",
+  "license": "UNLICENSED",
+  "scripts": {
+    "start": "node scripts/serve.mjs",
+    "build": "node scripts/build-static.mjs",
+    "test": "node --test test/*.test.mjs"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}
