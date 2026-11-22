@@ -22,3 +22,14 @@ test('requires a bounded nonempty file set',()=>{
  assert.throws(()=>inspectFiles([]));assert.throws(()=>inspectFiles(Array(31).fill({name:'a',text:'a'})));
  assert.throws(()=>inspectFiles([{name:'a',text:'a'.repeat(750001)}]));
 });
+
+test('flags hardcoded credentials, weak hashes and non-cryptographic randomness',()=>{
+ const report=inspectFiles([{name:'src/session.js',text:'const api_key = "demo-not-a-real-secret-1234";\nconst id = Math.random();\nconst digest = md5(value);\n'}]);
+ assert.deepEqual(report.findings.map(f=>f.rule),['hardcoded-credential','insecure-random','weak-hash']);
+ assert.equal(report.findings[0].severity,'high');
+ assert.equal(report.findings[0].title,'Possible hardcoded credential');
+});
+test('does not flag environment lookups or strong hashing as credentials',()=>{
+ const report=inspectFiles([{name:'src/config.js',text:'const key = process.env.API_KEY;\nconst digest = createHash("sha256").update(x);\n'}]);
+ assert.equal(report.findings.length,0);
+});
