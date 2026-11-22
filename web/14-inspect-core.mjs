@@ -1,1 +1,0 @@
-web/inspect-core.mjs
