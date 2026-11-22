@@ -1,4 +1,4 @@
-import { inspectCore } from './inspect-core.mjs';
+import { inspectCore } from './inspect-core.mjs?v=1.2.0';
 export async function inspectFiles(input){
  if(!globalThis.crypto?.subtle)throw new Error('Secure browser hashing is unavailable. Open this page over HTTPS or localhost.');
  const report=inspectCore(input);
