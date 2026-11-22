@@ -54,8 +54,8 @@
     },
     {
       "path": "web/app.js",
-      "bytes": 25203,
-      "sha256": "6dfd43d7a8cc7b5b07cdc0b016dff5f407dc4ec580dbfd5d6649f02defabf9fe"
+      "bytes": 25235,
+      "sha256": "9f12865a17d520adb1fe7a3b78248a9c000c5efe461000b1420c40b71a05f312"
     },
     {
       "path": "web/compare-core.mjs",
@@ -69,13 +69,13 @@
     },
     {
       "path": "web/index.html",
-      "bytes": 9887,
-      "sha256": "221060785b22654dc13fef368d66444c8d04f8675c0034c25d28d33cd011fab9"
+      "bytes": 9911,
+      "sha256": "649b424c42769c860d85d6725d349f1ca12c5ba9494eac2ef461d685eac38360"
     },
     {
       "path": "web/inspect-browser.mjs",
-      "bytes": 521,
-      "sha256": "153a7c6f913c7d7d64598aeecebb19d286cb6a36b1f7408d6fa446b56d43f80d"
+      "bytes": 529,
+      "sha256": "8e70c338ab5854e1e191041b11bec7e770feafbf2622ffc086d49857bd2f5ee6"
     },
     {
       "path": "web/inspect-core.mjs",
@@ -84,8 +84,8 @@
     },
     {
       "path": "web/ledger.mjs",
-      "bytes": 5814,
-      "sha256": "c123c75dfb7086edaecfed70e70d78f8e5478e9bfb5e82468c38f4b28f0cc8ae"
+      "bytes": 5822,
+      "sha256": "a84676ba91c90519901f4e3e5e42061d1815da6dbbddff973a4131abd9e50020"
     },
     {
       "path": "web/style.css",
