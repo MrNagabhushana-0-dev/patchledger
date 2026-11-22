@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {inspectFiles} from '../src/inspect.mjs';
 import {makeExport,restoreAssessments,markdownReport} from '../web/ledger.mjs';
+import {compareVersions} from '../web/compare-core.mjs';
 const source=[{name:'src/a.js',text:'eval(input);\n// TODO review'},{name:'test/a.js',text:'const fixture = "eval(x)";'}];
 test('exports preserve local assessments in flat and per-file records without source text',()=>{
  const report=inspectFiles(source),notes=new Map([[report.findings[0].id,{status:'needs-fix',note:'Check the caller.'}]]);
@@ -40,4 +41,35 @@ test('markdown treats filenames and note markup as literal text, not embedded HT
  const notes=new Map([[r.findings[0].id,{status:'needs-context',note:'<img src=x>\n![image](https://example.invalid)'}]]);
  const md=markdownReport(r,notes);
  assert.equal(md.includes('<img'),false);assert.equal(md.includes('![image]'),false);assert.ok(md.includes('&lt;img&gt;'));
+});
+
+test('exports carry decision counts and an optional change block, and still restore',()=>{
+ const base=inspectFiles([{name:'src/a.js',text:'eval(input);\n'},{name:'src/old.js',text:'// TODO gone\n'}]);
+ const next=inspectFiles([{name:'src/a.js',text:'eval(input);\n'},{name:'src/new.js',text:'Math.random();\n'}]);
+ const change=compareVersions(base,next);
+ const notes=new Map([[next.findings[0].id,{status:'needs-fix',note:'Keep the review.'}]]);
+ const out=makeExport(next,notes,change);
+ assert.equal(out.formatVersion,3);
+ assert.equal(out.review.counts['needs-fix'],1);
+ assert.equal(out.review.counts.unreviewed,1);
+ assert.equal(out.change.summary.removed,1);
+ assert.ok(Date.parse(out.review.generatedAt));
+ const restored=restoreAssessments(inspectFiles([{name:'src/a.js',text:'eval(input);\n'},{name:'src/new.js',text:'Math.random();\n'}].reverse()),out);
+ assert.equal([...restored.values()][0].note,'Keep the review.');
+});
+test('markdown opens with the decision summary and the shape of the change',()=>{
+ const base=inspectFiles([{name:'src/a.js',text:'eval(input);\n'},{name:'src/old.js',text:'// TODO gone\n'}]);
+ const next=inspectFiles([{name:'src/a.js',text:'eval(input);\n'}]);
+ const change=compareVersions(base,next);
+ const md=markdownReport(next,new Map(),change);
+ assert.match(md,/Decisions: 0 need a fix/);
+ assert.match(md,/## The compared change/);
+ assert.match(md,/0 added · 0 modified · 1 unchanged · 1 removed/);
+ assert.match(md,/\*\*Removed:\*\* src\/old/);
+ assert.match(md,/## Removed files/);
+ assert.match(md,/base SHA-256/);
+});
+test('markdown without a change stays a plain per-file handoff',()=>{
+ const md=markdownReport(inspectFiles(source),new Map());
+ assert.equal(md.includes('compared change'),false);
 });
