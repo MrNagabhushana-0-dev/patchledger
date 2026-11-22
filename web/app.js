@@ -1,7 +1,7 @@
-import { inspectFiles } from './inspect-browser.mjs';
-import { ASSESSMENTS, EMPTY_ASSESSMENT, makeExport, restoreAssessments, markdownReport } from './ledger.mjs';
-import { compareVersions, CHANGE_STATUSES, changeOf } from './compare-core.mjs';
-import { SEVERITIES } from './inspect-core.mjs';
+import { inspectFiles } from './inspect-browser.mjs?v=1.2.0';
+import { ASSESSMENTS, EMPTY_ASSESSMENT, makeExport, restoreAssessments, markdownReport } from './ledger.mjs?v=1.2.0';
+import { compareVersions, CHANGE_STATUSES, changeOf } from './compare-core.mjs?v=1.2.0';
+import { SEVERITIES } from './inspect-core.mjs?v=1.2.0';
 
 const $ = id => document.getElementById(id);
 
