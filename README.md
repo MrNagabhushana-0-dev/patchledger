@@ -26,14 +26,14 @@ Deploy the generated `public/` directory on a static HTTPS host. Browser SHA-256
 
 ## Privacy and limits
 
-- All inspection and notes run in the current browser tab. No source-upload endpoint, account, tracking or service worker is used. The only stored value is the theme choice (light or dark) in localStorage; source text and notes never touch storage.
+- All inspection and notes run in the current browser tab. By default no source-upload endpoint, account, tracking or service worker is used. The optional companion server accepts only excerpts explicitly approved in the UI and sends them through the configured OpenClaw model. The only stored value is the theme choice (light or dark) in localStorage; source text and notes never touch storage.
 - The hero scene and the review map are WebGL drawings rendered locally from data already in the tab; the vendored Three.js r187 build is served from this repository with no CDN or third-party request. The scenes are navigation and presentation, not analysis. If WebGL is unavailable, the explorer and queue work unchanged. All animation stops under a reduced-motion preference.
 - Exports exclude source text. They include file names, hashes and reviewer notes, so keep secrets out of notes too.
 - Refreshing or closing clears source and notes. Unexported assessments trigger a browser warning where supported; export before leaving. Download initiation is not proof the file was saved, check browser downloads.
 - Eight text-pattern checks cover dynamic evaluation, process execution, raw HTML sinks, disabled TLS verification, possible hardcoded credentials, weak hash functions, non-cryptographic randomness and unfinished-work markers. These are candidates, not proven defects or language-aware analysis. No match is not a security clearance.
 - Basic credential checks are not a complete secret scanner. Do not open confidential code in an untrusted deployed copy of any app. Folder selection support varies by browser; individual files work as an alternative. The OS-level file-picker experience has not been tested on every platform.
 - Large candidate lists are capped per file and labelled. The queue initially renders at most 100 entries, with a control to load more.
-- This version does not run Kimi, Cerebras, OpenClaw or any other AI model. No model speed, inferred verdict or successful hackathon qualification is claimed. Model integration is future work, not a built feature.
+- The static hosted edition does not run inference. It can export a selected excerpt as an OpenClaw task. The optional companion server implements real OpenClaw CLI review but requires your own activated model configuration. No live model run, speed, model access or hackathon qualification is claimed for this release.
 
 ## Source and tests
 
@@ -42,3 +42,27 @@ Deploy the generated `public/` directory on a static HTTPS host. Browser SHA-256
 This repository is the browser-local product release. Experimental model runners, account/access records, publication receipts, videos and personal screenshots are intentionally excluded.
 
 Built by Nagabhushana Raju S. All rights reserved; no redistribution license has been granted.
+
+
+## Optional OpenClaw review connection (1.5.0)
+
+The deployed static app includes **Export OpenClaw task**, which downloads the selected candidate and surrounding numbered lines. Inspect the text for secrets before using it. Run it with your own configured OpenClaw harness:
+
+```sh
+openclaw agent exec --message-file patchledger-review-task.txt --json
+```
+
+For in-app review, install OpenClaw 2026.11.7 separately with its supported Node runtime (Node 24.16+ in the 24 series, or 26.1+). The local desk itself still works on Node 22. Prepare a private OpenClaw config outside the repository, with a model you are authorized to use and any credentials held outside source control. No provider is selected for you. Do not commit keys or configs. In that config disable tools for the review agent and set `agents.defaults.contextInjection` to `never`.
+
+Start the companion with explicit configuration (replace paths and model identifier):
+
+```sh
+PATCHLEDGER_AI_ENABLED=1 \
+PATCHLEDGER_OPENCLAW_CONFIG=/absolute/private/openclaw.json \
+PATCHLEDGER_MODEL=provider/model \
+npm start
+```
+
+Then open localhost:4317, load a review, select a candidate, and use **Check companion connection**, **Prepare selected excerpt**, and the consent checkbox. The server uses `openclaw agent exec` with a temporary working directory, denies all tools, validates line citations, caps request/output size, limits concurrency and deletes its temporary directory. It never auto-applies model suggestions or retries a model request. Failed access is an error, not a local fallback pretending to be AI. Ordinary provider logs or OpenClaw state may have their own retention rules; inspect your configured service before sending private code.
+
+This companion is loopback-only. GitHub Pages cannot run it. No publicly hosted backend, cloud model key, or model entitlement is included. The browser task export works on Pages without a backend. Unit tests use explicitly labelled fixtures for successful model responses. A real model review remains unverified until access is configured and a live turn succeeds.
