@@ -1,9 +1,44 @@
-import { inspectFiles } from './inspect-browser.mjs?v=1.2.0';
-import { ASSESSMENTS, EMPTY_ASSESSMENT, makeExport, restoreAssessments, markdownReport } from './ledger.mjs?v=1.2.0';
-import { compareVersions, CHANGE_STATUSES, changeOf } from './compare-core.mjs?v=1.2.0';
-import { SEVERITIES } from './inspect-core.mjs?v=1.2.0';
+import { inspectFiles } from './inspect-browser.mjs?v=1.3.0';
+import { ASSESSMENTS, EMPTY_ASSESSMENT, makeExport, restoreAssessments, markdownReport } from './ledger.mjs?v=1.3.0';
+import { compareVersions, CHANGE_STATUSES, changeOf } from './compare-core.mjs?v=1.3.0';
+import { SEVERITIES } from './inspect-core.mjs?v=1.3.0';
+import { initHero } from './hero3d.mjs?v=1.3.0';
+import { initMap } from './map3d.mjs?v=1.3.0';
+import { initMotion } from './motion.mjs?v=1.3.0';
 
 const $ = id => document.getElementById(id);
+
+// Immersive layer. Both scenes degrade silently: without WebGL the page keeps
+// its static backdrop and the list explorer remains the way to browse files.
+initHero($('hero-canvas'));
+initMotion();
+const reviewMap = initMap($('map-canvas'), $('map-tooltip'));
+
+function renderLegend() {
+  const legend = $('map-legend');
+  legend.replaceChildren();
+  const items = change
+    ? [['added', 'Added'], ['modified', 'Modified'], ['unchanged', 'Unchanged'], ['removed', 'Removed']]
+    : [['high', 'High attention'], ['review', 'Review'], ['note', 'Note'], ['clean', 'No candidates']];
+  for (const [cls, label] of items) {
+    const item = el('span');
+    item.append(el('span', undefined, 'legend-dot ' + cls), document.createTextNode(label));
+    legend.append(item);
+  }
+}
+
+function showMap() {
+  if (!reviewMap || !report) return;
+  $('map-panel').hidden = false;
+  renderLegend();
+  reviewMap.setData(report.files, change);
+}
+if (reviewMap) {
+  reviewMap.onSelect = name => {
+    activeFile = name; chooseFirst(); render();
+    if (matchMedia('(max-width:900px)').matches) $('review-desk').scrollIntoView({ block: 'start' });
+  };
+}
 
 // Workspace state. Source text and notes live only in this tab's memory.
 let report, change = null, sourceFiles = [], assessments = new Map(), findingFiles = new Map();
@@ -151,6 +186,7 @@ function commit(sources, data, isSample, changeResult) {
   document.body.classList.add('has-workspace');
   chooseFirst();
   render();
+  showMap();
 }
 
 // ---------- Review state ----------
@@ -194,6 +230,7 @@ function renderFiles() {
     b.onclick = () => { activeFile = entry.name; chooseFirst(); render(); };
     rail.append(b);
   }
+  if (reviewMap && !$('map-panel').hidden) reviewMap.setActive(activeFile);
 }
 
 function candidates() {
