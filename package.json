@@ -1,6 +1,6 @@
 {
   "name": "patchledger",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "private": true,
   "type": "module",
   "description": "Browser-local source-review workbench with version comparison, numbered evidence, human assessments and restorable handoff exports.",
