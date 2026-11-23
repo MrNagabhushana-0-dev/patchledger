@@ -1,4 +1,4 @@
-import { CHANGE_STATUSES } from './compare-core.mjs?v=1.2.0';
+import { CHANGE_STATUSES } from './compare-core.mjs?v=1.3.0';
 
 // The four decisions a reviewer can record on a candidate.
 export const ASSESSMENTS = { 'unreviewed': 'Not reviewed', 'needs-fix': 'Needs a fix', 'not-an-issue': 'Not an issue', 'needs-context': 'Need more context' };
