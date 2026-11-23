@@ -546,6 +546,7 @@ html[data-theme="light"]{scrollbar-color:#b3c0ae #f5f5ee}
 [data-theme="light"] .candidate[aria-current=true]{background:rgba(46,125,91,.14);box-shadow:inset 3px 0 var(--green)}
 [data-theme="light"] .expand-source{background:transparent;border:0;border-top:1px solid var(--line);color:var(--green);box-shadow:none}
 [data-theme="light"] .expand-source:not(:disabled):hover{background:rgba(46,125,91,.06);box-shadow:none;transform:none}
+[data-theme="light"] .sample-button{color:var(--glow)}
 [data-theme="light"] :is(button,input,select,textarea,summary,a):focus-visible,[data-theme="light"] label.restore:focus-within{outline-color:#5f9774}
 [data-theme="light"] .topbar{background:rgba(245,245,238,.78)}
 [data-theme="light"] .monogram{box-shadow:0 2px 10px rgba(36,93,67,.22),inset 0 1px 0 rgba(255,255,255,.2)}
@@ -583,14 +584,32 @@ html[data-theme="light"]{scrollbar-color:#b3c0ae #f5f5ee}
 [data-theme="light"] kbd{background:#f7f9f3;border-color:#cdd7c8}
 [data-theme="light"] .error{border-color:#dfb7b1;color:var(--red);background:#fff8f5}
 
-/* The WebGL stages stay dark in both themes: the hero canvas and the review
-   map are rendered scenes, so their chrome keeps the ledger-room palette. */
-[data-theme="light"] .hero,[data-theme="light"] .map-panel{
-  --bg:#070c0a;--bg2:#0b1310;--surface:#101a15;--glass:rgba(15,24,19,.72);
-  --ink:#e9f2ea;--muted:#aec3b2;--faint:#92a894;--line:#1e2d24;--line-soft:#18251d;
-  --green:#57b583;--green-deep:#1f6b47;--glow:#8fe6b4;--soft:#1a2a21;
+/* The WebGL stages follow the theme: in light mode the hero canvas and the
+   review map sit on the cream paper palette and the scenes recolour to
+   match, keeping the same geometry and motion. */
+[data-theme="light"] #hero-canvas{
+  background:
+    radial-gradient(900px 500px at 70% 30%, rgba(46,125,91,.14), transparent 60%),
+    radial-gradient(700px 500px at 20% 70%, rgba(161,127,54,.06), transparent 55%),
+    linear-gradient(180deg,#f0f0e7,#f5f5ee);
 }
-[data-theme="light"] .map-panel{background:linear-gradient(180deg,#0b1310,#070c0a)}
+[data-theme="light"] h1{
+  background:linear-gradient(120deg,#173f2e 30%,#245d43 75%,#2f7a55);
+  -webkit-background-clip:text;background-clip:text;
+}
+[data-theme="light"] .intake{
+  border-color:rgba(36,93,67,.25);
+  box-shadow:0 18px 50px rgba(33,59,37,.14),inset 0 1px 0 rgba(255,255,255,.7);
+}
+[data-theme="light"] .map-panel{background:radial-gradient(700px 220px at 50% 0%,rgba(46,125,91,.1),transparent 70%)}
+[data-theme="light"] .map-tooltip{
+  background:rgba(255,253,246,.95);border-color:rgba(36,93,67,.4);
+  box-shadow:0 8px 24px rgba(33,59,37,.18);
+}
+[data-theme="light"] .legend-dot.added{background:#2e8a5c}[data-theme="light"] .legend-dot.modified{background:#a17f36}
+[data-theme="light"] .legend-dot.removed{background:#a73832}[data-theme="light"] .legend-dot.unchanged{background:#7d8a80}
+[data-theme="light"] .legend-dot.high{background:#a73832}[data-theme="light"] .legend-dot.review{background:#a17f36}
+[data-theme="light"] .legend-dot.note{background:#5f9774}[data-theme="light"] .legend-dot.clean{background:#55705f}
 
 @media(max-width:640px){
   [data-theme="light"] .candidate-list{background:#fbfcf8}
