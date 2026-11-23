@@ -2,7 +2,29 @@
    Dark, immersive visual system: deep-ink backdrop, glass panels, emerald
    light, display serif headings, local WebGL scenes. All geometry and
    behaviour hooks used by app.js are preserved. */
+/* Theme palettes. Light is the original cream-and-green paper look; dark is
+   the immersive ledger room. The inline script in index.html sets data-theme
+   on <html> before first paint, and the toggle remembers the choice. */
 :root{
+  --bg:#f5f5ee;
+  --bg2:#f0f0e7;
+  --surface:#ffffff;
+  --glass:rgba(255,255,255,.78);
+  --ink:#1d3128;
+  --muted:#65736b;
+  --faint:#8a968c;
+  --line:#dce2d9;
+  --line-soft:#e5e9df;
+  --green:#245d43;
+  --green-deep:#173f2e;
+  --glow:#2f7a55;
+  --soft:#e9f0e6;
+  --yellow:#a17f36;
+  --red:#a73832;
+  --mono:ui-monospace,SFMono-Regular,Consolas,monospace;
+  color-scheme:light;
+}
+[data-theme="dark"]{
   --bg:#070c0a;
   --bg2:#0b1310;
   --surface:#101a15;
@@ -15,9 +37,10 @@
   --green:#57b583;
   --green-deep:#1f6b47;
   --glow:#8fe6b4;
+  --soft:#1a2a21;
   --yellow:#e0be5f;
   --red:#e07a5f;
-  --mono:ui-monospace,SFMono-Regular,Consolas,monospace;
+  color-scheme:dark;
 }
 *{box-sizing:border-box}
 html{scrollbar-color:#26402f var(--bg)}
@@ -74,6 +97,8 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 .privacy-pill>span{width:6px;height:6px;border-radius:50%;background:var(--glow);box-shadow:0 0 8px var(--glow);animation:pulse 2.6s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
 .topbar>.text-button{font-size:12px}
+.theme-toggle{display:inline-flex;align-items:center;gap:7px;white-space:nowrap}
+.theme-toggle::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--glow);box-shadow:0 0 8px var(--glow)}
 .about{
   max-width:1000px;margin:20px auto;padding:24px 30px;
   background:var(--glass);backdrop-filter:blur(10px);
@@ -87,6 +112,7 @@ main{max-width:1520px;margin:auto;padding:0 40px 40px}
 
 /* ---------- Hero ---------- */
 .hero{
+  color:var(--ink);
   position:relative;min-height:calc(100vh - 76px);
   display:flex;flex-direction:column;justify-content:center;
   margin:0 -40px;padding:0 40px;overflow:hidden;
@@ -165,7 +191,7 @@ progress::-moz-progress-bar{background:linear-gradient(90deg,#2e8a5c,#8fe6b4)}
 .unsaved{color:var(--yellow)}
 
 /* ---------- 3D review map ---------- */
-.map-panel{border-bottom:1px solid var(--line);background:radial-gradient(700px 220px at 50% 0%,rgba(46,125,91,.12),transparent 70%)}
+.map-panel{color:var(--ink);border-bottom:1px solid var(--line);background:radial-gradient(700px 220px at 50% 0%,rgba(46,125,91,.12),transparent 70%)}
 .map-head{display:flex;align-items:center;gap:16px;padding:14px 25px 6px}
 .map-head .rail-label{padding:0;color:var(--green)}
 .map-legend{display:flex;gap:12px;flex-wrap:wrap;font:9px/1.6 var(--mono);color:var(--muted);letter-spacing:.5px}
@@ -492,4 +518,83 @@ footer{display:flex;justify-content:space-between;gap:20px;padding:22px 0 0;bord
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{transition:none!important;animation:none!important;scroll-behavior:auto!important}
   .reveal{opacity:1;transform:none}
+}
+
+/* ---------- Light theme: the original cream-and-green paper look ---------- */
+html[data-theme="light"]{scrollbar-color:#b3c0ae #f5f5ee}
+[data-theme="light"] body{
+  background:
+    radial-gradient(1200px 700px at 75% -10%, rgba(36,93,67,.06), transparent 60%),
+    radial-gradient(900px 620px at 8% 12%, rgba(161,127,54,.05), transparent 55%),
+    linear-gradient(180deg,#f7f7f0,#f5f5ee 40%);
+  background-attachment:fixed;
+}
+[data-theme="light"] body::after{background:radial-gradient(120% 90% at 50% 40%,transparent 62%,rgba(60,70,55,.07))}
+[data-theme="light"] ::selection{background:rgba(36,93,67,.18)}
+[data-theme="light"] button{background:var(--green);border-color:var(--green);color:#fff;box-shadow:0 2px 10px rgba(36,93,67,.16)}
+[data-theme="light"] button:not(:disabled):hover{background:var(--green-deep);box-shadow:0 4px 16px rgba(36,93,67,.2)}
+[data-theme="light"] .secondary{background:#fff;color:var(--green);border-color:#cbd5c9;box-shadow:none}
+[data-theme="light"] .secondary:not(:disabled):hover{background:var(--soft);color:var(--ink);box-shadow:none}
+/* Specialized buttons keep their own quiet styling in light mode too. */
+[data-theme="light"] .text-button{background:transparent;border:0;color:var(--muted);box-shadow:none}
+[data-theme="light"] .text-button:not(:disabled):hover{background:transparent;color:var(--glow);box-shadow:none;transform:none}
+[data-theme="light"] .file-button{background:transparent;border:0;color:var(--muted);box-shadow:none}
+[data-theme="light"] .file-button:not(:disabled):hover{background:rgba(46,125,91,.09);color:var(--ink);box-shadow:none;transform:none}
+[data-theme="light"] .file-button[aria-pressed=true]{color:var(--green);background:rgba(46,125,91,.13);box-shadow:inset 3px 0 var(--green)}
+[data-theme="light"] .candidate{background:transparent;border:0;border-bottom:1px solid var(--line-soft);color:var(--ink);box-shadow:none}
+[data-theme="light"] .candidate:not(:disabled):hover{background:rgba(46,125,91,.08);box-shadow:none;transform:none}
+[data-theme="light"] .candidate[aria-current=true]{background:rgba(46,125,91,.14);box-shadow:inset 3px 0 var(--green)}
+[data-theme="light"] .expand-source{background:transparent;border:0;border-top:1px solid var(--line);color:var(--green);box-shadow:none}
+[data-theme="light"] .expand-source:not(:disabled):hover{background:rgba(46,125,91,.06);box-shadow:none;transform:none}
+[data-theme="light"] :is(button,input,select,textarea,summary,a):focus-visible,[data-theme="light"] label.restore:focus-within{outline-color:#5f9774}
+[data-theme="light"] .topbar{background:rgba(245,245,238,.78)}
+[data-theme="light"] .monogram{box-shadow:0 2px 10px rgba(36,93,67,.22),inset 0 1px 0 rgba(255,255,255,.2)}
+[data-theme="light"] .review-desk{border-color:#d3dcd0;box-shadow:0 18px 50px rgba(33,59,37,.1),inset 0 1px 0 rgba(255,255,255,.7)}
+[data-theme="light"] .progress-row{background:#fbfcf8}
+[data-theme="light"] progress,[data-theme="light"] progress::-webkit-progress-bar{background:#e4e9df}
+[data-theme="light"] progress::-webkit-progress-value,[data-theme="light"] progress::-moz-progress-bar{background:linear-gradient(90deg,#245d43,#57b583)}
+[data-theme="light"] .file-rail{background:#f9faf6}
+[data-theme="light"] .file-badge{background:#eef1e9}
+[data-theme="light"] .search-label input{background:#fbfcf8}
+[data-theme="light"] .queue-empty>span{color:#bac6b0}
+[data-theme="light"] .line-illustration{border-color:#cad8c5;background:#f4f7ef}
+[data-theme="light"] .line-illustration span{background:#b4c7a8}
+[data-theme="light"] .line-illustration span:nth-child(3){background:#739066}
+[data-theme="light"] .detail-status{background:#f0f3eb}
+[data-theme="light"] .source-panel{background:#fff}
+[data-theme="light"] .source-head{background:#f7f9f3}
+[data-theme="light"] .source-code{background:#fcfcfa}
+[data-theme="light"] .code-line{color:#33463a}
+[data-theme="light"] .line-number{color:#99a28f}
+[data-theme="light"] .code-line.highlighted{background:#e9f0df}
+[data-theme="light"] .assessment-form select,[data-theme="light"] .assessment-form textarea{background:#fff;border-color:#cdd7c8}
+[data-theme="light"] .change-badge{color:#5d6b58;background:#eef1e9}
+[data-theme="light"] .change-badge.added{color:#245d43;background:#dfecda}
+[data-theme="light"] .change-badge.modified{color:#7a5c17;background:#f4ead0}
+[data-theme="light"] .change-badge.removed{color:#8c322c;background:#f6e3df}
+[data-theme="light"] .change-badge.unchanged{color:#5d6b58;background:#eef1e9}
+[data-theme="light"] .sev{background:#eef1e9;color:#5d6b58}
+[data-theme="light"] .sev-high{color:#8c322c;background:#f6e3df}
+[data-theme="light"] .sev-review{color:#7a5c17;background:#f4ead0}
+[data-theme="light"] .sev-note{color:#6d7a66;background:#f0f2ea}
+[data-theme="light"] .removed-panel code{background:#f7f9f3}
+[data-theme="light"] #shortcut-dialog{background:var(--surface);box-shadow:0 30px 80px rgba(29,49,40,.25)}
+[data-theme="light"] #shortcut-dialog::backdrop{background:rgba(29,49,40,.45)}
+[data-theme="light"] kbd{background:#f7f9f3;border-color:#cdd7c8}
+[data-theme="light"] .error{border-color:#dfb7b1;color:var(--red);background:#fff8f5}
+
+/* The WebGL stages stay dark in both themes: the hero canvas and the review
+   map are rendered scenes, so their chrome keeps the ledger-room palette. */
+[data-theme="light"] .hero,[data-theme="light"] .map-panel{
+  --bg:#070c0a;--bg2:#0b1310;--surface:#101a15;--glass:rgba(15,24,19,.72);
+  --ink:#e9f2ea;--muted:#aec3b2;--faint:#92a894;--line:#1e2d24;--line-soft:#18251d;
+  --green:#57b583;--green-deep:#1f6b47;--glow:#8fe6b4;--soft:#1a2a21;
+}
+[data-theme="light"] .map-panel{background:linear-gradient(180deg,#0b1310,#070c0a)}
+
+@media(max-width:640px){
+  [data-theme="light"] .candidate-list{background:#fbfcf8}
+}
+@media(max-width:900px){
+  [data-theme="light"] .file-button[aria-pressed=true]{box-shadow:inset 0 0 0 1px var(--green)}
 }
