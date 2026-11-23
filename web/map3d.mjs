@@ -8,7 +8,7 @@
 // zoom, click a node to open that file in the review desk. Rendered locally
 // from data already in the tab; no source text leaves the browser.
 
-import * as THREE from './three.module.min.js?v=1.3.0';
+import * as THREE from './three.module.min.js?v=1.3.1';
 
 const COLORS = {
   added: 0x58d68d, modified: 0xe6c15c, removed: 0xe07a5f, unchanged: 0x6f7f74,
@@ -49,10 +49,10 @@ export function initMap(canvas, tooltip) {
   const sphere = new THREE.SphereGeometry(1, 24, 18);
 
   // Ground grid.
-  const grid = new THREE.PolarGridHelper(10, 12, 6, 48, 0x2b4536, 0x1b2c22);
+  const grid = new THREE.PolarGridHelper(10, 12, 6, 48, 0x3d6b50, 0x26402f);
   grid.position.y = -2.2;
   grid.material.transparent = true;
-  grid.material.opacity = 0.35;
+  grid.material.opacity = 0.55;
   world.add(grid);
 
   let nodes = [], nodeData = [], edges = null, halo = null;
@@ -124,7 +124,7 @@ export function initMap(canvas, tooltip) {
       linePts.push(new THREE.Vector3(Math.cos(ca) * clusterR, -0.1, Math.sin(ca) * clusterR), p);
     }
     const eGeo = new THREE.BufferGeometry().setFromPoints(linePts);
-    edges = new THREE.LineSegments(eGeo, new THREE.LineBasicMaterial({ color: 0x54896b, transparent: true, opacity: 0.16 }));
+    edges = new THREE.LineSegments(eGeo, new THREE.LineBasicMaterial({ color: 0x6fae88, transparent: true, opacity: 0.3 }));
     world.add(edges);
     setActive(activeName);
     fitCamera(clusterR);
