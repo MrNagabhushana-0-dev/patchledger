@@ -3,7 +3,7 @@ import { ASSESSMENTS, EMPTY_ASSESSMENT, makeExport, restoreAssessments, markdown
 import { compareVersions, CHANGE_STATUSES, changeOf } from './compare-core.mjs?v=1.3.0';
 import { SEVERITIES } from './inspect-core.mjs?v=1.3.0';
 import { initHero } from './hero3d.mjs?v=1.3.0';
-import { initMap } from './map3d.mjs?v=1.3.0';
+import { initMap } from './map3d.mjs?v=1.3.1';
 import { initMotion } from './motion.mjs?v=1.3.0';
 
 const $ = id => document.getElementById(id);
