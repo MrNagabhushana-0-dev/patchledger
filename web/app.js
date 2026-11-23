@@ -1,3 +1,4 @@
+import { initAssistant } from './assistant.mjs';
 import { inspectFiles } from './inspect-browser.mjs?v=1.3.0';
 import { ASSESSMENTS, EMPTY_ASSESSMENT, makeExport, restoreAssessments, markdownReport } from './ledger.mjs?v=1.3.0';
 import { compareVersions, CHANGE_STATUSES, changeOf } from './compare-core.mjs?v=1.3.0';
@@ -486,3 +487,10 @@ $('clear').onclick = () => {
   report = undefined; change = null; sourceFiles = []; assessments.clear(); dirty = false; activeId = null; activeFile = null;
   location.reload();
 };
+
+initAssistant(() => {
+ const finding=activeFinding(); if(!finding) return null;
+ const file=fileOf(finding); const source=sourceFiles.find(f=>f.name===file.name);
+ const lines=source.text.split(/\r?\n/); const start=Math.max(0,finding.line-5), end=Math.min(lines.length,finding.line+4);
+ return {file:file.name, question: finding.title+": "+finding.reason, lines:lines.slice(start,end).map((text,i)=>({number:start+i+1,text}))};
+});
