@@ -10,9 +10,29 @@
 
 import * as THREE from './three.module.min.js?v=1.3.0';
 
-const COLORS = {
+// Node colours per theme: bright on the dark stage, deeper on cream.
+const COLORS_DARK = {
   added: 0x58d68d, modified: 0xe6c15c, removed: 0xe07a5f, unchanged: 0x6f7f74,
   high: 0xe07a5f, review: 0xe6c15c, note: 0x7fa88c, clean: 0x4c6b58,
+};
+const COLORS_LIGHT = {
+  added: 0x2e8a5c, modified: 0xa17f36, removed: 0xa73832, unchanged: 0x7d8a80,
+  high: 0xa73832, review: 0xa17f36, note: 0x5f9774, clean: 0x55705f,
+};
+
+const THEMES = {
+  dark: {
+    fog: 0x0a100d, grid: [0x3d6b50, 0x26402f], gridOpacity: 0.55,
+    edges: 0x6fae88, edgeOpacity: 0.3, halo: 0x9fe8c0,
+    glowBlending: THREE.AdditiveBlending, glowOpacity: 0.5, emissive: 0.55,
+    colors: COLORS_DARK,
+  },
+  light: {
+    fog: 0xf0efe4, grid: [0x245d43, 0xafc3ab], gridOpacity: 0.6,
+    edges: 0x3d6b50, edgeOpacity: 0.4, halo: 0x245d43,
+    glowBlending: THREE.NormalBlending, glowOpacity: 0.3, emissive: 0.35,
+    colors: COLORS_LIGHT,
+  },
 };
 
 const easeOutBack = p => { const c = 1.70158; const q = p - 1; return 1 + (c + 1) * q * q * q + c * q * q; };
@@ -38,9 +58,11 @@ export function initMap(canvas, tooltip) {
   }
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 2));
+  let theme = document.documentElement.dataset.theme === 'light' ? 'light' : 'dark';
+  const P = () => THEMES[theme];
 
   const scene = new THREE.Scene();
-  scene.fog = new THREE.FogExp2(0x0a100d, 0.045);
+  scene.fog = new THREE.FogExp2(P().fog, 0.045);
   const camera = new THREE.PerspectiveCamera(50, 2, 0.1, 120);
   scene.add(new THREE.AmbientLight(0xffffff, 0.75));
   const key = new THREE.PointLight(0xbfffd9, 40, 60); key.position.set(6, 9, 7); scene.add(key);
@@ -50,12 +72,17 @@ export function initMap(canvas, tooltip) {
   const spriteTex = glowTexture();
   const sphere = new THREE.SphereGeometry(1, 24, 18);
 
-  // Ground grid.
-  const grid = new THREE.PolarGridHelper(10, 12, 6, 48, 0x3d6b50, 0x26402f);
-  grid.position.y = -2.2;
-  grid.material.transparent = true;
-  grid.material.opacity = 0.55;
-  world.add(grid);
+  // Ground grid, one per theme so a toggle is a visibility flip.
+  const grids = {};
+  for (const name of ['dark', 'light']) {
+    const g = new THREE.PolarGridHelper(10, 12, 6, 48, THEMES[name].grid[0], THEMES[name].grid[1]);
+    g.position.y = -2.2;
+    g.material.transparent = true;
+    g.material.opacity = THEMES[name].gridOpacity;
+    g.visible = name === theme;
+    grids[name] = g;
+    world.add(g);
+  }
 
   let nodes = [], nodeData = [], edges = null, halo = null;
   let onSelect = null, activeName = null;
@@ -63,7 +90,7 @@ export function initMap(canvas, tooltip) {
 
   halo = new THREE.Mesh(
     new THREE.TorusGeometry(1.45, 0.05, 8, 40),
-    new THREE.MeshBasicMaterial({ color: 0x9fe8c0, transparent: true, opacity: 0.9 }),
+    new THREE.MeshBasicMaterial({ color: P().halo, transparent: true, opacity: 0.9 }),
   );
   halo.visible = false;
   world.add(halo);
@@ -104,12 +131,13 @@ export function initMap(canvas, tooltip) {
     for (const e of entries) {
       const file = files.find(f => f.name === e.name);
       const p = positions.get(e.name);
-      const color = new THREE.Color(e.status ? COLORS[e.status] : COLORS[file && file.findings.length ? (file.findings.some(f => f.severity === 'high') ? 'high' : file.findings.some(f => f.severity === 'review') ? 'review' : 'note') : 'clean']);
+      const colorKey = e.status ? e.status : (file && file.findings.length ? (file.findings.some(f => f.severity === 'high') ? 'high' : file.findings.some(f => f.severity === 'review') ? 'review' : 'note') : 'clean');
+      const color = new THREE.Color(P().colors[colorKey]);
       const scale = 0.16 + Math.min(0.3, Math.sqrt(file ? file.lines : 4) * 0.012);
-      const mesh = new THREE.Mesh(sphere, new THREE.MeshStandardMaterial({ color, emissive: color, emissiveIntensity: 0.55, metalness: 0.2, roughness: 0.35, transparent: true, opacity: names.has(e.name) ? 1 : 0.45 }));
+      const mesh = new THREE.Mesh(sphere, new THREE.MeshStandardMaterial({ color, emissive: color, emissiveIntensity: P().emissive, metalness: 0.2, roughness: 0.35, transparent: true, opacity: names.has(e.name) ? 1 : 0.45 }));
       mesh.scale.setScalar(scale);
       mesh.position.copy(p);
-      const glow = new THREE.Sprite(new THREE.SpriteMaterial({ map: spriteTex, color, transparent: true, opacity: 0.5, blending: THREE.AdditiveBlending, depthWrite: false }));
+      const glow = new THREE.Sprite(new THREE.SpriteMaterial({ map: spriteTex, color, transparent: true, opacity: P().glowOpacity, blending: P().glowBlending, depthWrite: false }));
       const glowScale = scale * (3 + Math.min(4, (file ? file.findings.length : 0) * 0.8));
       glow.scale.setScalar(glowScale);
       glow.position.copy(p);
@@ -119,7 +147,7 @@ export function initMap(canvas, tooltip) {
       hit.position.copy(p);
       world.add(mesh, glow, hit);
       nodes.push({ mesh, glow, hit });
-      nodeData.push({ name: e.name, status: e.status, file, base: p.clone(), baseScale: scale, delay: nodeData.length * 45, phase: (p.x * 13.7 + p.z * 7.3) % 6.28 });
+      nodeData.push({ name: e.name, status: e.status, file, colorKey, base: p.clone(), baseScale: scale, delay: nodeData.length * 45, phase: (p.x * 13.7 + p.z * 7.3) % 6.28 });
       // edge from cluster centre
       const dir = e.name.includes('/') ? e.name.split('/')[0] : '(root)';
       const di = dirs.indexOf(dir);
@@ -127,7 +155,7 @@ export function initMap(canvas, tooltip) {
       linePts.push(new THREE.Vector3(Math.cos(ca) * clusterR, -0.1, Math.sin(ca) * clusterR), p);
     }
     const eGeo = new THREE.BufferGeometry().setFromPoints(linePts);
-    edges = new THREE.LineSegments(eGeo, new THREE.LineBasicMaterial({ color: 0x6fae88, transparent: true, opacity: 0.3 }));
+    edges = new THREE.LineSegments(eGeo, new THREE.LineBasicMaterial({ color: P().edges, transparent: true, opacity: P().edgeOpacity }));
     world.add(edges);
     setActive(activeName);
     fitCamera(clusterR);
@@ -251,8 +279,8 @@ export function initMap(canvas, tooltip) {
       const shown = p > 0;
       nodes[i].mesh.visible = shown; nodes[i].glow.visible = shown; nodes[i].hit.visible = shown;
       nodes[i].mesh.scale.setScalar(Math.max(0.0001, d.baseScale * easeOutBack(p)));
-      nodes[i].glow.material.opacity = 0.5 * p;
-      nodes[i].mesh.material.emissiveIntensity = d.name === activeName && !reduced ? 0.85 + Math.sin(t * 2.2) * 0.25 : 0.55;
+      nodes[i].glow.material.opacity = P().glowOpacity * p;
+      nodes[i].mesh.material.emissiveIntensity = d.name === activeName && !reduced ? P().emissive + 0.3 + Math.sin(t * 2.2) * 0.25 : P().emissive;
       nodes[i].mesh.position.y = d.base.y + Math.sin(t * 0.9 + d.phase) * 0.09;
       nodes[i].glow.position.copy(nodes[i].mesh.position);
       nodes[i].hit.position.copy(nodes[i].mesh.position);
@@ -261,7 +289,7 @@ export function initMap(canvas, tooltip) {
         halo.scale.setScalar(Math.max(0.28, d.baseScale * 2.1 * easeOutBack(p)));
       }
     }
-    if (edges) edges.material.opacity = 0.3 * (reduced ? 1 : Math.min(1, (now - appearT0) / 900));
+    if (edges) edges.material.opacity = P().edgeOpacity * (reduced ? 1 : Math.min(1, (now - appearT0) / 900));
     if (halo.visible) { halo.lookAt(camera.position); halo.rotation.z = t * 0.5; halo.material.opacity = reduced ? 0.9 : 0.65 + Math.sin(t * 2.2) * 0.25; }
     applyCamera();
     renderer.render(scene, camera);
@@ -292,9 +320,32 @@ export function initMap(canvas, tooltip) {
     renderOnce();
   }).observe(canvas.parentElement);
 
+  // Recolour the scene for the other theme; geometry and layout stay put.
+  function setTheme(next) {
+    if (!THEMES[next] || next === theme) return;
+    theme = next;
+    const p = P();
+    scene.fog.color.setHex(p.fog);
+    grids.dark.visible = theme === 'dark';
+    grids.light.visible = theme === 'light';
+    halo.material.color.setHex(p.halo);
+    if (edges) { edges.material.color.setHex(p.edges); edges.material.opacity = p.edgeOpacity; }
+    for (let i = 0; i < nodes.length; i++) {
+      const hex = p.colors[nodeData[i].colorKey];
+      nodes[i].mesh.material.color.setHex(hex);
+      nodes[i].mesh.material.emissive.setHex(hex);
+      nodes[i].mesh.material.emissiveIntensity = p.emissive;
+      nodes[i].glow.material.color.setHex(hex);
+      nodes[i].glow.material.blending = p.glowBlending;
+      nodes[i].glow.material.needsUpdate = true;
+    }
+    renderOnce();
+  }
+
   return {
     setData,
     setActive,
+    setTheme,
     set onSelect(fn) { onSelect = fn; },
   };
 }
