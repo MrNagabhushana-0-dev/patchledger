@@ -1,5 +1,5 @@
 {
-  "version": "1.4.0",
+  "version": "1.4.1",
   "scope": "Browser-local product source. No model runner or private account records.",
   "files": [
     {
@@ -14,18 +14,18 @@
     },
     {
       "path": "README.md",
-      "bytes": 5288,
-      "sha256": "a80a7f5b2c45e4a60df6c595b804e2a8be96f6b53f384588e71e8303f8bc162d"
+      "bytes": 5276,
+      "sha256": "19955dc367fc8c64f4e06c883ac01555370cdd0579d4676c5ea4b4d7446ea0ee"
     },
     {
       "path": "SOURCE-MANIFEST.json",
       "bytes": 4079,
-      "sha256": "3c50734cf734561cb6b02213d754d3680f49842dadb704ffcdc8580df6305c45"
+      "sha256": "68ce5eb93e7f41446ef63fb90ca0ff62c23618e954cc7a17d461d827413c1041"
     },
     {
       "path": "package.json",
       "bytes": 454,
-      "sha256": "5a0e80457d7a1bd153cbb7e3076225b2645a5b69f09ec9b6e2428622a9681fff"
+      "sha256": "821e59aa34a1c3171289a5a56c81a63100932690a9d010418c905a1dae0d18e6"
     },
     {
       "path": "scripts/build-static.mjs",
@@ -64,8 +64,8 @@
     },
     {
       "path": "web/app.js",
-      "bytes": 28020,
-      "sha256": "d22bfe59f6dae51ed01a53d42dc800efc0a4618c6abb4f0ac6f474690a7f21c6"
+      "bytes": 28104,
+      "sha256": "d66def3c4f4cf3826c2efe01c9b0bee026004261aed107f838e2c1bda29855e3"
     },
     {
       "path": "web/compare-core.mjs",
@@ -79,13 +79,13 @@
     },
     {
       "path": "web/hero3d.mjs",
-      "bytes": 10445,
-      "sha256": "98105137163d2fcfbc3c2e236ff84edff461bb12545e762c36c48a46470e1a4c"
+      "bytes": 13852,
+      "sha256": "32c43f7d23212daf9e42e7c12f286a615f513f18630253fe53f5840930a7373a"
     },
     {
       "path": "web/index.html",
       "bytes": 11147,
-      "sha256": "e9197ba49126c10eafc11713887d7c5c80908a250675f199bb7cd09ead75540c"
+      "sha256": "acc819a77756c860a8fc0832a4b424f202e8e0031965857cfbd015852275332b"
     },
     {
       "path": "web/inspect-browser.mjs",
@@ -104,8 +104,8 @@
     },
     {
       "path": "web/map3d.mjs",
-      "bytes": 13543,
-      "sha256": "c524f38052990e5cfc9dd8e37ecc1b22e52842ea58167b234c83a6258365b128"
+      "bytes": 15623,
+      "sha256": "e2a20796bad34badd7948906507b449aa0f939feda58f13b63f76e9fdb366a83"
     },
     {
       "path": "web/motion.mjs",
@@ -114,8 +114,8 @@
     },
     {
       "path": "web/style.css",
-      "bytes": 35839,
-      "sha256": "01e1e1d8fbf37d3430450939809be59b768aef5b1c2c7c9f0399f9074cf4444f"
+      "bytes": 36865,
+      "sha256": "da18bffc67b399263881833b0d712fb285a996860a22a3287dd8c55ded3d4805"
     },
     {
       "path": "web/theme-boot.js",
