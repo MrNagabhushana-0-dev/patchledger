@@ -1,5 +1,5 @@
 {
-  "version": "1.3.0",
+  "version": "1.3.1",
   "scope": "Browser-local product source. No model runner or private account records.",
   "files": [
     {
@@ -19,13 +19,13 @@
     },
     {
       "path": "SOURCE-MANIFEST.json",
-      "bytes": 2843,
-      "sha256": "0a09d3450239389aafab5e00049ab382e90c0e0e8fa50427c77263118fcabfb1"
+      "bytes": 5786,
+      "sha256": "564e7ed02c9e5b93e6b93f93ef52b5a000069c8355625150e3a42128e46caaa0"
     },
     {
       "path": "package.json",
       "bytes": 454,
-      "sha256": "d8a8cd8410869d9e652ea91710b2ba4f992bbfa0788a19b2a546365a550803d1"
+      "sha256": "ff824202b6fc2609eb7dab64fc7f35c9994401ea8439f3adaf2aa69e7b4caee8"
     },
     {
       "path": "scripts/build-static.mjs",
@@ -65,7 +65,7 @@
     {
       "path": "web/app.js",
       "bytes": 26607,
-      "sha256": "d35a2682ca7ee78b97cd283fd9a19ee14cb9c213057a87e6fe7edfb7b6ef3cff"
+      "sha256": "484494196e7dab976337205276a1ac650c34c415fc9b901ff39ee02797c55259"
     },
     {
       "path": "web/compare-core.mjs",
@@ -85,7 +85,7 @@
     {
       "path": "web/index.html",
       "bytes": 10994,
-      "sha256": "fd2578fe6e546b1c9808ff0ef8364ad71974c43e1e69dc3e6c3e1b9d2dd7b429"
+      "sha256": "b30e74495479b00838430036283e0e460500e81fd6a2642e79708d0caf71cd35"
     },
     {
       "path": "web/inspect-browser.mjs",
@@ -104,8 +104,8 @@
     },
     {
       "path": "web/map3d.mjs",
-      "bytes": 12133,
-      "sha256": "f9c95e3b77cde0a9708b0c6af810bbd39b64aa4b306cfa172a223fa2b543f29d"
+      "bytes": 12132,
+      "sha256": "a6b03e404330ca4c4e6f0bfa7042029b06d20fc3d1b11827a7b009d02a1c1e93"
     },
     {
       "path": "web/motion.mjs",
@@ -114,8 +114,8 @@
     },
     {
       "path": "web/style.css",
-      "bytes": 29105,
-      "sha256": "769dfcdb5b9d2877864894ae1945b99672fee178d9491a34c702d65bb514879f"
+      "bytes": 29106,
+      "sha256": "0b87c2d8a1726d07f33cfe313083e12886620acecc54692cdae9b17faabd1c22"
     },
     {
       "path": "web/three.core.min.js",
