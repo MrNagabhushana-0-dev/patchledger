@@ -8,12 +8,14 @@
 // zoom, click a node to open that file in the review desk. Rendered locally
 // from data already in the tab; no source text leaves the browser.
 
-import * as THREE from './three.module.min.js?v=1.3.1';
+import * as THREE from './three.module.min.js?v=1.3.0';
 
 const COLORS = {
   added: 0x58d68d, modified: 0xe6c15c, removed: 0xe07a5f, unchanged: 0x6f7f74,
   high: 0xe07a5f, review: 0xe6c15c, note: 0x7fa88c, clean: 0x4c6b58,
 };
+
+const easeOutBack = p => { const c = 1.70158; const q = p - 1; return 1 + (c + 1) * q * q * q + c * q * q; };
 
 function glowTexture() {
   const c = document.createElement('canvas');
@@ -57,6 +59,7 @@ export function initMap(canvas, tooltip) {
 
   let nodes = [], nodeData = [], edges = null, halo = null;
   let onSelect = null, activeName = null;
+  let appearT0 = 0, sweepT0 = 0, sweepFrom = 0, sweepTarget = 0;
 
   halo = new THREE.Mesh(
     new THREE.TorusGeometry(1.45, 0.05, 8, 40),
@@ -116,7 +119,7 @@ export function initMap(canvas, tooltip) {
       hit.position.copy(p);
       world.add(mesh, glow, hit);
       nodes.push({ mesh, glow, hit });
-      nodeData.push({ name: e.name, status: e.status, file, base: p.clone(), phase: (p.x * 13.7 + p.z * 7.3) % 6.28 });
+      nodeData.push({ name: e.name, status: e.status, file, base: p.clone(), baseScale: scale, delay: nodeData.length * 45, phase: (p.x * 13.7 + p.z * 7.3) % 6.28 });
       // edge from cluster centre
       const dir = e.name.includes('/') ? e.name.split('/')[0] : '(root)';
       const di = dirs.indexOf(dir);
@@ -128,6 +131,9 @@ export function initMap(canvas, tooltip) {
     world.add(edges);
     setActive(activeName);
     fitCamera(clusterR);
+    // Entrance: nodes pop in with a stagger and the camera sweeps in.
+    appearT0 = performance.now();
+    sweepFrom = theta - 0.5; sweepTarget = theta; sweepT0 = reduced ? 0 : performance.now();
     renderOnce();
   }
 
@@ -172,6 +178,7 @@ export function initMap(canvas, tooltip) {
   }
 
   canvas.addEventListener('pointerdown', e => {
+    sweepT0 = 0;
     try { canvas.setPointerCapture(e.pointerId); } catch { /* synthetic or legacy pointers */ }
     pointers.set(e.pointerId, [e.clientX, e.clientY]);
     dragging = true; moved = 0; lastX = e.clientX; lastY = e.clientY;
@@ -231,16 +238,31 @@ export function initMap(canvas, tooltip) {
   const t0 = performance.now();
   function frame() {
     const t = (performance.now() - t0) / 1000;
-    if (idleSpin) theta += 0.0012;
+    const now = performance.now();
+    if (sweepT0) {
+      const sp = Math.min(1, (now - sweepT0) / 1400);
+      theta = sweepFrom + (sweepTarget - sweepFrom) * (1 - Math.pow(1 - sp, 3));
+      if (sp >= 1) sweepT0 = 0;
+    } else if (idleSpin) theta += 0.0012;
     dist += (targetDist - dist) * 0.08;
     for (let i = 0; i < nodes.length; i++) {
       const d = nodeData[i];
+      const p = reduced ? 1 : Math.min(1, Math.max(0, (now - appearT0 - d.delay) / 550));
+      const shown = p > 0;
+      nodes[i].mesh.visible = shown; nodes[i].glow.visible = shown; nodes[i].hit.visible = shown;
+      nodes[i].mesh.scale.setScalar(Math.max(0.0001, d.baseScale * easeOutBack(p)));
+      nodes[i].glow.material.opacity = 0.5 * p;
+      nodes[i].mesh.material.emissiveIntensity = d.name === activeName && !reduced ? 0.85 + Math.sin(t * 2.2) * 0.25 : 0.55;
       nodes[i].mesh.position.y = d.base.y + Math.sin(t * 0.9 + d.phase) * 0.09;
       nodes[i].glow.position.copy(nodes[i].mesh.position);
       nodes[i].hit.position.copy(nodes[i].mesh.position);
-      if (halo.visible && d.name === activeName) halo.position.copy(nodes[i].mesh.position);
+      if (halo.visible && d.name === activeName) {
+        halo.position.copy(nodes[i].mesh.position);
+        halo.scale.setScalar(Math.max(0.28, d.baseScale * 2.1 * easeOutBack(p)));
+      }
     }
-    if (halo.visible) { halo.lookAt(camera.position); halo.rotation.z = t * 0.5; }
+    if (edges) edges.material.opacity = 0.3 * (reduced ? 1 : Math.min(1, (now - appearT0) / 900));
+    if (halo.visible) { halo.lookAt(camera.position); halo.rotation.z = t * 0.5; halo.material.opacity = reduced ? 0.9 : 0.65 + Math.sin(t * 2.2) * 0.25; }
     applyCamera();
     renderer.render(scene, camera);
   }
