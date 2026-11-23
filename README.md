@@ -1,6 +1,6 @@
 # PatchLedger
 
-A browser-local code-review workbench. Compare two versions of a change, read the evidence, record a human decision, and keep a handoff without uploading source.
+A browser-local code-review workbench with an immersive 3D interface. Compare two versions of a change, orbit the review map, read the evidence, record a human decision, and keep a handoff without uploading source.
 
 ## Run
 
@@ -18,7 +18,7 @@ Deploy the generated `public/` directory on a static HTTPS host. Browser SHA-256
 ## Review a change
 
 1. Review one version, or compare two: pick the base and the updated files or folders. The comparison pairs files by path and labels each added, modified, unchanged or removed from SHA-256 fingerprints. Each side accepts up to 30 UTF-8 source files, 750 KB total. Folder paths keep same-named files distinct. Folder import skips dependency/generated directories, unsupported types and known credential filenames before reading them.
-2. Use the explorer with its change badges, plus the search, assessment, severity and change-scope filters to narrow the queue. The sample change review is clearly labelled illustrative code and is never executed.
+2. Use the 3D review map or the list explorer with its change badges, plus the search, assessment, severity and change-scope filters, to narrow the queue. In the map, every node is a file: colour shows its change status (compare) or highest candidate level (single version), size follows line count and glow follows candidate count. Drag to orbit, scroll or pinch to zoom, click a file to open it. The sample change review is clearly labelled illustrative code and is never executed.
 3. Read numbered source around a match, or expand the full file. Each file has a SHA-256 fingerprint. Removed files keep their base fingerprint on the record.
 4. Mark a candidate Not reviewed, Needs a fix, Not an issue or Need more context. Add the reason, then move to the next unreviewed candidate. Keyboard: j/k moves through the queue, 1/2/3/0 records the decision, n jumps to the next unreviewed candidate, f toggles the full file, ? lists the shortcuts.
 5. Save JSON for a restorable review, or export Markdown for a readable handoff. Both open with the decision summary and, in compare mode, the shape of the change. Restore JSON only after opening the exact same source files. File names and hashes must match, even when import order changes.
@@ -26,6 +26,7 @@ Deploy the generated `public/` directory on a static HTTPS host. Browser SHA-256
 ## Privacy and limits
 
 - All inspection and notes run in the current browser tab. No source-upload endpoint, account, tracking, localStorage or service worker is used.
+- The hero scene and the review map are WebGL drawings rendered locally from data already in the tab; the vendored Three.js r187 build is served from this repository with no CDN or third-party request. The scenes are navigation and presentation, not analysis. If WebGL is unavailable, the explorer and queue work unchanged. All animation stops under a reduced-motion preference.
 - Exports exclude source text. They include file names, hashes and reviewer notes, so keep secrets out of notes too.
 - Refreshing or closing clears source and notes. Unexported assessments trigger a browser warning where supported; export before leaving. Download initiation is not proof the file was saved, check browser downloads.
 - Eight text-pattern checks cover dynamic evaluation, process execution, raw HTML sinks, disabled TLS verification, possible hardcoded credentials, weak hash functions, non-cryptographic randomness and unfinished-work markers. These are candidates, not proven defects or language-aware analysis. No match is not a security clearance.
@@ -35,7 +36,7 @@ Deploy the generated `public/` directory on a static HTTPS host. Browser SHA-256
 
 ## Source and tests
 
-`web/` contains the editable app, the shared pattern checker and the version comparator. `web/ledger.mjs` handles local assessment exports and hash-bound restore. `src/inspect.mjs` is the Node hashing adapter used by tests. The build copies static app assets only.
+`web/` contains the editable app, the shared pattern checker and the version comparator. `web/ledger.mjs` handles local assessment exports and hash-bound restore. `web/hero3d.mjs` renders the hero scene, `web/map3d.mjs` the interactive review map and `web/motion.mjs` the scroll reveals; `web/three.module.min.js` and `web/three.core.min.js` are the vendored, unmodified Three.js r187 module build. `src/inspect.mjs` is the Node hashing adapter used by tests. The build copies static app assets only.
 
 This repository is the browser-local product release. Experimental model runners, account/access records, publication receipts, videos and personal screenshots are intentionally excluded.
 
