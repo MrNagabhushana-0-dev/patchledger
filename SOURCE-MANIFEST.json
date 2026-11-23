@@ -1,6 +1,6 @@
 {
-  "version": "1.4.1",
-  "scope": "Browser-local product source. No model runner or private account records.",
+  "version": "1.5.0",
+  "scope": "Product source and optional loopback OpenClaw companion. No credentials, private configs or model access bundled.",
   "files": [
     {
       "path": ".github/workflows/static.yml",
@@ -14,18 +14,13 @@
     },
     {
       "path": "README.md",
-      "bytes": 5276,
-      "sha256": "19955dc367fc8c64f4e06c883ac01555370cdd0579d4676c5ea4b4d7446ea0ee"
-    },
-    {
-      "path": "SOURCE-MANIFEST.json",
-      "bytes": 4079,
-      "sha256": "68ce5eb93e7f41446ef63fb90ca0ff62c23618e954cc7a17d461d827413c1041"
+      "bytes": 7702,
+      "sha256": "2d6681813bede4375f03ca71a1396b8410eb1d8f66c1775a2808c68d4b1a585b"
     },
     {
       "path": "package.json",
       "bytes": 454,
-      "sha256": "821e59aa34a1c3171289a5a56c81a63100932690a9d010418c905a1dae0d18e6"
+      "sha256": "12206c62c5a27302324ea78f3e94c0d6ff0203395d79be1b6ad44b82aaef4497"
     },
     {
       "path": "scripts/build-static.mjs",
@@ -34,13 +29,18 @@
     },
     {
       "path": "scripts/serve.mjs",
-      "bytes": 1318,
-      "sha256": "6fbde9e1cb4323dab9fb3d1cc8922950ef1b254ff5569e3d321f4064112ee056"
+      "bytes": 3546,
+      "sha256": "ba75f73227475289be64c2c6824b8150733b5bc0196aa3b9e2390b320f360f76"
     },
     {
       "path": "src/inspect.mjs",
       "bytes": 292,
       "sha256": "9b25a13bde8bc267954035a7c9311d4e4dd1e9f4d748e2cbf79fdc42fc8ec95d"
+    },
+    {
+      "path": "src/openclaw-review.mjs",
+      "bytes": 5916,
+      "sha256": "9356aec12883e260e7dcbec38287861dda3f85f8aabd779eacb5b8e8e90677f2"
     },
     {
       "path": "test/compare.test.mjs",
@@ -58,14 +58,24 @@
       "sha256": "fdcc89afeb30f04a4d470be714a1ac997131666697ac18a8103af4c33c5b935d"
     },
     {
+      "path": "test/openclaw.test.mjs",
+      "bytes": 4145,
+      "sha256": "fe419380daf1034d8757ee4c350fd5ae828dc9ea3a1e0bc145e0395cab6e3e35"
+    },
+    {
       "path": "vercel.json",
       "bytes": 490,
       "sha256": "01c6eb549a784e1246006aa64646375cfb6d555cc7e1993fda506433db153ece"
     },
     {
       "path": "web/app.js",
-      "bytes": 28104,
-      "sha256": "d66def3c4f4cf3826c2efe01c9b0bee026004261aed107f838e2c1bda29855e3"
+      "bytes": 28587,
+      "sha256": "5057b0fe12f49d1cf00f1ef9e795ab8ea09ce83e3b87459cad4e25d5f9a5183e"
+    },
+    {
+      "path": "web/assistant.mjs",
+      "bytes": 3694,
+      "sha256": "e646e4949fdefb6f48ba362619282139f8f6f19ca9f996128205fc6b56a905e7"
     },
     {
       "path": "web/compare-core.mjs",
@@ -84,8 +94,8 @@
     },
     {
       "path": "web/index.html",
-      "bytes": 11147,
-      "sha256": "acc819a77756c860a8fc0832a4b424f202e8e0031965857cfbd015852275332b"
+      "bytes": 12469,
+      "sha256": "6d904bae34c9e53c1903abdfd0408bb56fcad0ba52bcc8eb1cb10beb1b689e8a"
     },
     {
       "path": "web/inspect-browser.mjs",
@@ -114,8 +124,8 @@
     },
     {
       "path": "web/style.css",
-      "bytes": 36865,
-      "sha256": "da18bffc67b399263881833b0d712fb285a996860a22a3287dd8c55ded3d4805"
+      "bytes": 37369,
+      "sha256": "0e0ad60a313c5948d5ce15d447a008b4c0e59324240d65878a37ad076cf897cc"
     },
     {
       "path": "web/theme-boot.js",
