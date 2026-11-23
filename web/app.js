@@ -2,15 +2,15 @@ import { inspectFiles } from './inspect-browser.mjs?v=1.3.0';
 import { ASSESSMENTS, EMPTY_ASSESSMENT, makeExport, restoreAssessments, markdownReport } from './ledger.mjs?v=1.3.0';
 import { compareVersions, CHANGE_STATUSES, changeOf } from './compare-core.mjs?v=1.3.0';
 import { SEVERITIES } from './inspect-core.mjs?v=1.3.0';
-import { initHero } from './hero3d.mjs?v=1.4.0';
-import { initMap } from './map3d.mjs?v=1.4.0';
+import { initHero } from './hero3d.mjs?v=1.4.1';
+import { initMap } from './map3d.mjs?v=1.4.1';
 import { initMotion } from './motion.mjs?v=1.3.0';
 
 const $ = id => document.getElementById(id);
 
 // Immersive layer. Both scenes degrade silently: without WebGL the page keeps
 // its static backdrop and the list explorer remains the way to browse files.
-initHero($('hero-canvas'));
+const heroScene = initHero($('hero-canvas'));
 initMotion();
 const reviewMap = initMap($('map-canvas'), $('map-tooltip'));
 
@@ -77,6 +77,8 @@ if (themeButton) {
     const next = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
     document.documentElement.dataset.theme = next;
     try { localStorage.setItem('patchledger-theme', next); } catch { /* storage can be unavailable */ }
+    heroScene?.setTheme?.(next);
+    reviewMap?.setTheme?.(next);
     syncThemeButton();
   };
   syncThemeButton();
