@@ -2,8 +2,8 @@ import { inspectFiles } from './inspect-browser.mjs?v=1.3.0';
 import { ASSESSMENTS, EMPTY_ASSESSMENT, makeExport, restoreAssessments, markdownReport } from './ledger.mjs?v=1.3.0';
 import { compareVersions, CHANGE_STATUSES, changeOf } from './compare-core.mjs?v=1.3.0';
 import { SEVERITIES } from './inspect-core.mjs?v=1.3.0';
-import { initHero } from './hero3d.mjs?v=1.3.0';
-import { initMap } from './map3d.mjs?v=1.3.1';
+import { initHero } from './hero3d.mjs?v=1.4.0';
+import { initMap } from './map3d.mjs?v=1.4.0';
 import { initMotion } from './motion.mjs?v=1.3.0';
 
 const $ = id => document.getElementById(id);
@@ -58,6 +58,29 @@ function setDirty(value) { dirty = value; updateProgress(); }
 window.addEventListener('beforeunload', event => { if (dirty) { event.preventDefault(); event.returnValue = ''; } });
 
 $('about-button').onclick = () => { const open = $('about').hidden; $('about').hidden = !open; $('about-button').setAttribute('aria-expanded', String(open)); };
+
+// ---------- Theme ----------
+// Dark is the immersive default; light restores the original paper look. The
+// inline head script applies the remembered choice before first paint; this
+// keeps the toggle, the document and local storage in sync from then on.
+const themeButton = $('theme-toggle');
+if (themeButton) {
+  const syncThemeButton = () => {
+    const dark = document.documentElement.dataset.theme !== 'light';
+    themeButton.textContent = dark ? 'Light' : 'Dark';
+    themeButton.setAttribute('aria-pressed', String(dark));
+    const label = dark ? 'Switch to light mode' : 'Switch to dark mode';
+    themeButton.setAttribute('aria-label', label);
+    themeButton.title = label;
+  };
+  themeButton.onclick = () => {
+    const next = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
+    document.documentElement.dataset.theme = next;
+    try { localStorage.setItem('patchledger-theme', next); } catch { /* storage can be unavailable */ }
+    syncThemeButton();
+  };
+  syncThemeButton();
+}
 
 // ---------- Intake ----------
 
@@ -187,6 +210,12 @@ function commit(sources, data, isSample, changeResult) {
   chooseFirst();
   render();
   showMap();
+  // Land the reviewer at the desk once the hero has receded; scrolling
+  // earlier races the collapse transition and lands past the desk.
+  if (scrollY < innerHeight * 0.6) {
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    setTimeout(() => $('review-desk').scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' }), reduced ? 0 : 750);
+  }
 }
 
 // ---------- Review state ----------
