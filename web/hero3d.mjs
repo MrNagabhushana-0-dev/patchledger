@@ -133,9 +133,36 @@ export function initHero(canvas) {
   const particles = new THREE.Points(pGeo, new THREE.PointsMaterial({ color: 0x9fe8c0, size: 0.045, transparent: true, opacity: 0.55, blending: THREE.AdditiveBlending, depthWrite: false }));
   scene.add(particles);
 
+  // A dimmer, farther dust layer deepens the parallax.
+  const farCount = 260;
+  const farPos = new Float32Array(farCount * 3);
+  for (let i = 0; i < farCount; i++) {
+    const r = 14 + Math.random() * 16, th = Math.random() * Math.PI * 2, ph = Math.acos(2 * Math.random() - 1);
+    farPos[i * 3] = r * Math.sin(ph) * Math.cos(th);
+    farPos[i * 3 + 1] = (r * Math.cos(ph)) * 0.5;
+    farPos[i * 3 + 2] = r * Math.sin(ph) * Math.sin(th);
+  }
+  const farGeo = new THREE.BufferGeometry();
+  farGeo.setAttribute('position', new THREE.BufferAttribute(farPos, 3));
+  const farDust = new THREE.Points(farGeo, new THREE.PointsMaterial({ color: 0x6fae8b, size: 0.08, transparent: true, opacity: 0.22, blending: THREE.AdditiveBlending, depthWrite: false }));
+  scene.add(farDust);
+
+  // Soft halo behind the ledger ring, breathing slowly.
+  const glowCanvas = document.createElement('canvas'); glowCanvas.width = glowCanvas.height = 128;
+  const gg = glowCanvas.getContext('2d');
+  const haloGrad = gg.createRadialGradient(64, 64, 2, 64, 64, 62);
+  haloGrad.addColorStop(0, 'rgba(160,255,200,0.55)');
+  haloGrad.addColorStop(0.4, 'rgba(120,220,170,0.18)');
+  haloGrad.addColorStop(1, 'rgba(120,220,170,0)');
+  gg.fillStyle = haloGrad; gg.fillRect(0, 0, 128, 128);
+  const knotGlow = new THREE.Sprite(new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(glowCanvas), transparent: true, opacity: 0.8, blending: THREE.AdditiveBlending, depthWrite: false }));
+  knotGlow.scale.setScalar(9);
+  world.add(knotGlow);
+
   // State.
   const pointer = { x: 0, y: 0, tx: 0, ty: 0 };
-  let scrollT = 0, running = true, raf = 0, visible = true;
+  let scrollT = 0, scrollS = 0, running = true, raf = 0, visible = true;
+  const introT0 = performance.now();
 
   function resize() {
     const w = canvas.clientWidth || canvas.parentElement.clientWidth;
@@ -163,12 +190,17 @@ export function initHero(canvas) {
   const t0 = performance.now();
   function frame() {
     const t = (performance.now() - t0) / 1000;
+    // Entrance dolly-in, eased; scroll is smoothed so the camera glides.
+    const intro = reduced ? 1 : Math.min(1, (performance.now() - introT0) / 2400);
+    const enter = 1 - Math.pow(1 - intro, 3);
+    scrollS += (scrollT - scrollS) * 0.07;
     pointer.x += (pointer.tx - pointer.x) * 0.045;
     pointer.y += (pointer.ty - pointer.y) * 0.045;
     world.rotation.y = t * 0.05 + pointer.x * 0.22;
     world.rotation.x = pointer.y * 0.10;
     knot.rotation.x = t * 0.22; knot.rotation.y = t * 0.3;
     torus.rotation.z = t * 0.08; torus2.rotation.z = -t * 0.06;
+    torus.material.opacity = 0.45 + Math.sin(t * 0.9) * 0.12;
     for (const m of cards) {
       const u = m.userData;
       u.a += u.speed * 0.0035;
@@ -179,11 +211,16 @@ export function initHero(canvas) {
     }
     updateLines();
     particles.rotation.y = t * 0.012;
-    camera.position.z = 15 - scrollT * 4.5;
-    camera.position.y = 0.4 + scrollT * 1.2 - pointer.y * 0.35;
+    farDust.rotation.y = -t * 0.006;
+    camera.position.z = 26 - 11 * enter - scrollS * 4.5;
+    camera.position.y = 0.4 + scrollS * 1.2 - pointer.y * 0.35;
     camera.position.x = pointer.x * 0.9;
+    camera.fov = 46 + scrollS * 6;
+    camera.updateProjectionMatrix();
     camera.lookAt(0, 0.2, 0);
-    canvas.style.opacity = String(1 - scrollT * 0.75);
+    camera.rotateZ(pointer.x * -0.04);
+    knotGlow.material.opacity = 0.65 + Math.sin(t * 0.8) * 0.15;
+    canvas.style.opacity = String(1 - scrollS * 0.75);
     renderer.render(scene, camera);
   }
   function tick() {
