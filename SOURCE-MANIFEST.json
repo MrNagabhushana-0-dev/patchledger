@@ -1,7 +1,12 @@
 {
-  "version": "1.2.0",
+  "version": "1.3.0",
   "scope": "Browser-local product source. No model runner or private account records.",
   "files": [
+    {
+      "path": ".github/workflows/static.yml",
+      "bytes": 1255,
+      "sha256": "45e202371452dd319ad3a2dda8ccfd601a46333e20bb7b7722123f9911bfb4c5"
+    },
     {
       "path": ".gitignore",
       "bytes": 89,
@@ -9,13 +14,18 @@
     },
     {
       "path": "README.md",
-      "bytes": 4025,
-      "sha256": "c7c2f3c050ee27807fe46c9dbea5048abb019a13c0fc431a1e72ce4a33234feb"
+      "bytes": 4963,
+      "sha256": "00c3df263068645f0815bc0a880c0a3a2ad167dcb4615712925bf001c96ce653"
+    },
+    {
+      "path": "SOURCE-MANIFEST.json",
+      "bytes": 2843,
+      "sha256": "0a09d3450239389aafab5e00049ab382e90c0e0e8fa50427c77263118fcabfb1"
     },
     {
       "path": "package.json",
       "bytes": 454,
-      "sha256": "66fd376201ff4145a85b4eb82dbf69d76acd76ad44fb940db390cbf3a37f31a1"
+      "sha256": "d8a8cd8410869d9e652ea91710b2ba4f992bbfa0788a19b2a546365a550803d1"
     },
     {
       "path": "scripts/build-static.mjs",
@@ -24,8 +34,8 @@
     },
     {
       "path": "scripts/serve.mjs",
-      "bytes": 1383,
-      "sha256": "8fe1d3de727c1199777a7f986e161dfa282482b04ff4d95ccb8624916854dca2"
+      "bytes": 1318,
+      "sha256": "6fbde9e1cb4323dab9fb3d1cc8922950ef1b254ff5569e3d321f4064112ee056"
     },
     {
       "path": "src/inspect.mjs",
@@ -54,8 +64,8 @@
     },
     {
       "path": "web/app.js",
-      "bytes": 25235,
-      "sha256": "9f12865a17d520adb1fe7a3b78248a9c000c5efe461000b1420c40b71a05f312"
+      "bytes": 26607,
+      "sha256": "d35a2682ca7ee78b97cd283fd9a19ee14cb9c213057a87e6fe7edfb7b6ef3cff"
     },
     {
       "path": "web/compare-core.mjs",
@@ -68,14 +78,19 @@
       "sha256": "96af30c6edef2cc523fe4f3122d484d1168468d35dea196c3acd16ccb3ec300f"
     },
     {
+      "path": "web/hero3d.mjs",
+      "bytes": 8354,
+      "sha256": "86126c94353c278f2aec002b06e3a356b6f54edd4613e4ea2beea98001f43b42"
+    },
+    {
       "path": "web/index.html",
-      "bytes": 9911,
-      "sha256": "649b424c42769c860d85d6725d349f1ca12c5ba9494eac2ef461d685eac38360"
+      "bytes": 10994,
+      "sha256": "fd2578fe6e546b1c9808ff0ef8364ad71974c43e1e69dc3e6c3e1b9d2dd7b429"
     },
     {
       "path": "web/inspect-browser.mjs",
       "bytes": 529,
-      "sha256": "8e70c338ab5854e1e191041b11bec7e770feafbf2622ffc086d49857bd2f5ee6"
+      "sha256": "e8c7dc09a4884b6b63c3ffbd5b73e304ce0e31cd8c5962665409227af7dbcaef"
     },
     {
       "path": "web/inspect-core.mjs",
@@ -85,12 +100,32 @@
     {
       "path": "web/ledger.mjs",
       "bytes": 5822,
-      "sha256": "a84676ba91c90519901f4e3e5e42061d1815da6dbbddff973a4131abd9e50020"
+      "sha256": "4293e7984dabe004d5f933ce72bd75928264ea5c1641d06d838e9c1a4eaafc85"
+    },
+    {
+      "path": "web/map3d.mjs",
+      "bytes": 12133,
+      "sha256": "f9c95e3b77cde0a9708b0c6af810bbd39b64aa4b306cfa172a223fa2b543f29d"
+    },
+    {
+      "path": "web/motion.mjs",
+      "bytes": 1549,
+      "sha256": "e85083daeac98264c04940df4695e0608d7b4b667e81109ab94cf4e39d3dd08e"
     },
     {
       "path": "web/style.css",
-      "bytes": 21007,
-      "sha256": "b2ed93f71e388979e7f89869fc446b260040a908589538ee3bd7109e13dccdf8"
+      "bytes": 29105,
+      "sha256": "769dfcdb5b9d2877864894ae1945b99672fee178d9491a34c702d65bb514879f"
+    },
+    {
+      "path": "web/three.core.min.js",
+      "bytes": 422062,
+      "sha256": "60880f0fd017e6ad08a80c2f0f7015c336ba0a5b6dbdde733b9272ca89eb95e2"
+    },
+    {
+      "path": "web/three.module.min.js",
+      "bytes": 392201,
+      "sha256": "c3ab717d5bd4f6b95446e00b3f3a64f5d1b4be4cf6331365aa7a25ebca2c7575"
     }
   ]
 }
