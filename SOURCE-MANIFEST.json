@@ -1,5 +1,5 @@
 {
-  "version": "1.3.1",
+  "version": "1.4.0",
   "scope": "Browser-local product source. No model runner or private account records.",
   "files": [
     {
@@ -14,18 +14,18 @@
     },
     {
       "path": "README.md",
-      "bytes": 4963,
-      "sha256": "00c3df263068645f0815bc0a880c0a3a2ad167dcb4615712925bf001c96ce653"
+      "bytes": 5288,
+      "sha256": "a80a7f5b2c45e4a60df6c595b804e2a8be96f6b53f384588e71e8303f8bc162d"
     },
     {
       "path": "SOURCE-MANIFEST.json",
-      "bytes": 5786,
-      "sha256": "564e7ed02c9e5b93e6b93f93ef52b5a000069c8355625150e3a42128e46caaa0"
+      "bytes": 4079,
+      "sha256": "3c50734cf734561cb6b02213d754d3680f49842dadb704ffcdc8580df6305c45"
     },
     {
       "path": "package.json",
       "bytes": 454,
-      "sha256": "ff824202b6fc2609eb7dab64fc7f35c9994401ea8439f3adaf2aa69e7b4caee8"
+      "sha256": "5a0e80457d7a1bd153cbb7e3076225b2645a5b69f09ec9b6e2428622a9681fff"
     },
     {
       "path": "scripts/build-static.mjs",
@@ -64,8 +64,8 @@
     },
     {
       "path": "web/app.js",
-      "bytes": 26607,
-      "sha256": "484494196e7dab976337205276a1ac650c34c415fc9b901ff39ee02797c55259"
+      "bytes": 28020,
+      "sha256": "d22bfe59f6dae51ed01a53d42dc800efc0a4618c6abb4f0ac6f474690a7f21c6"
     },
     {
       "path": "web/compare-core.mjs",
@@ -79,13 +79,13 @@
     },
     {
       "path": "web/hero3d.mjs",
-      "bytes": 8354,
-      "sha256": "86126c94353c278f2aec002b06e3a356b6f54edd4613e4ea2beea98001f43b42"
+      "bytes": 10445,
+      "sha256": "98105137163d2fcfbc3c2e236ff84edff461bb12545e762c36c48a46470e1a4c"
     },
     {
       "path": "web/index.html",
-      "bytes": 10994,
-      "sha256": "b30e74495479b00838430036283e0e460500e81fd6a2642e79708d0caf71cd35"
+      "bytes": 11147,
+      "sha256": "e9197ba49126c10eafc11713887d7c5c80908a250675f199bb7cd09ead75540c"
     },
     {
       "path": "web/inspect-browser.mjs",
@@ -104,8 +104,8 @@
     },
     {
       "path": "web/map3d.mjs",
-      "bytes": 12132,
-      "sha256": "a6b03e404330ca4c4e6f0bfa7042029b06d20fc3d1b11827a7b009d02a1c1e93"
+      "bytes": 13543,
+      "sha256": "c524f38052990e5cfc9dd8e37ecc1b22e52842ea58167b234c83a6258365b128"
     },
     {
       "path": "web/motion.mjs",
@@ -114,18 +114,23 @@
     },
     {
       "path": "web/style.css",
-      "bytes": 29106,
-      "sha256": "0b87c2d8a1726d07f33cfe313083e12886620acecc54692cdae9b17faabd1c22"
+      "bytes": 35839,
+      "sha256": "01e1e1d8fbf37d3430450939809be59b768aef5b1c2c7c9f0399f9074cf4444f"
+    },
+    {
+      "path": "web/theme-boot.js",
+      "bytes": 305,
+      "sha256": "04c4443e6b760c5e33ddb42a55108fb2df2d46b6ecae81b24c75e1b2aaf5c0dd"
     },
     {
       "path": "web/three.core.min.js",
-      "bytes": 422062,
-      "sha256": "60880f0fd017e6ad08a80c2f0f7015c336ba0a5b6dbdde733b9272ca89eb95e2"
+      "bytes": 422063,
+      "sha256": "5781804da3418bc106b85018a068231a2313f93e99a62155678d361575cba9a7"
     },
     {
       "path": "web/three.module.min.js",
-      "bytes": 392201,
-      "sha256": "c3ab717d5bd4f6b95446e00b3f3a64f5d1b4be4cf6331365aa7a25ebca2c7575"
+      "bytes": 392202,
+      "sha256": "3a93ea24c52d2e16d06033d8ade831bae0088b77d0b9d4b90c7dbe8e1a321b89"
     }
   ]
 }
